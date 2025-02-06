@@ -1,34 +1,83 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react"
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  // useState => Este hook nos ayuda a generar un estado para manipular datos dentro de nuestro componente
+  // useState => devuelve un arreglo con una variable de lectura y una función de escritura para cambiar el estado
+
+  // const weight = useState(1)
+
+  // const getWeight = weight[0]
+  // const setWeight = weight[1]
+
+  const [weight, setWeight] = useState(50)
+  const [height, setHeight] = useState(50)
+
+  const handleWeight = (event) => {
+    setWeight(event.target.value)
+  }
+
+  const handleHeight = (event) => setHeight(event.target.value)
+
+  const imc = weight / ((height / 100) ** 2)
+
+  const imcToDecimal = imc.toFixed(2)
+
+  // * Baja: < 18.5
+  // * Normal: < 18.5 - 24.9
+  // * Sobrepeso: < 25 - 29.9 
+  // * Obeso: > 30
+
+  const imcResult = () => {
+    let result = ''
+    console.log(imc)
+
+    if (imc < 18.5) {
+      result = 'Baja'
+    } else if (imc >= 18.5 && imc <= 24.9) {
+      result = 'Normal'
+    } else if (imc >= 25 && imc <= 29.9) {
+      result = 'Sobrepeso'
+    } else if (imc > 30) {
+      result = 'Obeso'
+    } else {
+      result = 'Datos incorrectos'
+    }
+
+    return result
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <section className="w-[400px] mx-auto bg-slate-200 p-4 mt-8">
+      <h1 className="text-3xl font-bold text-red-600 text-center">
+        IMC Calculator
+      </h1>
+
+      <div className="pt-4">
+        <p>Weight: {weight} kg</p>
+        <input
+          type="range"
+          min="50"
+          max="200"
+          onChange={handleWeight}
+          value={weight}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      <div className="pt-4">
+        <p>Height: {height} cm</p>
+        <input
+          type="range"
+          min="50"
+          max="1000"
+          onChange={handleHeight}
+          value={height}
+        />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+      <p className="font-bold">Tu IMC es {imcToDecimal}</p>
+
+      <p className="font-bold text-2xl">Estado de IMC: {imcResult()}</p>
+    </section>
   )
 }
 
